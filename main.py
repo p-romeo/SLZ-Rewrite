@@ -1,6 +1,6 @@
 import random
-from tkinter import *
 import tkinter as tk
+from PIL import Image, ImageTk
 
 
 class Player:
@@ -61,6 +61,7 @@ class Enemy:
 class Game:
     def __init__(self):
         # init game window
+        self.potion_image = None
         self.master = tk.Tk()
         self.master.title("SLZ - The Game")
 
@@ -83,6 +84,10 @@ class Game:
         self.attack_button.pack(pady=10)
         self.heal_button.pack(pady=10)
 
+        #add button to start potion encounter
+        self.potion_button = tk.Button(self.master, text="Inspect Potion", command=self.potion_encounter)
+        self.potion_button.pack(pady=10)
+
     def game_loop(self):
         self.update_display()
 
@@ -99,6 +104,37 @@ class Game:
     def update_display(self):
         self.player_health_label.config(text=self.player.display_health())
         self.enemy_health_label.config(text=self.enemy.display_health())
+
+    def potion_encounter(self):
+        #displays potion image and presents options
+        image = Image.open('potion.jpg')
+        self.potion_image = ImageTk.PhotoImage(image)
+        self.image_label = tk.Label(self.master, image=self.potion_image)
+        self.image_label.pack(pady=10)
+
+    def drink_potion(self):
+        #drinks the potion, random effects
+        effect = random.choice(["heal", "harm"])
+        if effect == "heal":
+            heal_amount = random.randint(10,20)
+            self.player.increase_health(heal_amount)
+            self.update_display()
+            self.player_health_label.config(text=f"You drank the potion and restored {heal_amount} health!")
+        if effect == "harm":
+            damage_amount = random.randint(5,25)
+            self.player.decrease_health(damage_amount)
+            self.update_display()
+            self.enemy_health_label.config(text=f"You drank the potion and took {damage_amount} points of damage!")
+
+    def leave_potion(self):
+        #player leaves the potion, boring fucks
+        self.image_label.pack_forget()
+        self.player_health_label.config(text=f"Leave the potion.")
+        #reset the buttons
+        self.attack_button.config(text="Attack Enemy", command=self.attack_enemy)
+        self.heal_button.config(text="Heal Player", command=self.heal_player)
+
+
 
 
 game = Game()
