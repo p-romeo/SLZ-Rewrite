@@ -2,6 +2,7 @@ import random
 from tkinter import *
 import tkinter as tk
 
+
 class Player:
     def __init__(self, initial_health=100):
         self.health = initial_health
@@ -11,10 +12,10 @@ class Player:
     def decrease_health(self, amount):
         """Decrease the players health by an amount"""
         self.health -= amount
-        self.health = max(0, self.health) #prevents health from going below 0
+        self.health = max(0, self.health)  # prevents health from going below 0
 
     def increase_health(self, amount):
-        self.health += amount #increases health by amount
+        self.health += amount  # increases health by amount
         self.health = min(100, self.health)
 
     def display_health(self):
@@ -28,6 +29,7 @@ class Player:
 
     def heal_legs(self):
         self.broken_legs = False
+
 
 class Enemy:
     def __init__(self, initial_health=100):
@@ -55,27 +57,41 @@ class Enemy:
     def stun_recovery(self):
         self.is_stunned = False
 
+
 class Game:
     def __init__(self):
-        #init game window
+        # init game window
         self.master = tk.Tk()
         self.master.title("SLZ - The Game")
 
-        #init players
+        # init players
         self.player = Player()
         self.enemy = Enemy()
 
-        #build gui
+        # build gui
         self.player_health_label = tk.Label(self.master, text=self.player.display_health())
         self.enemy_health_label = tk.Label(self.master, text=self.enemy.display_health())
 
-        #pack gui for display
+        # pack gui for display
         self.player_health_label.pack(pady=10)
         self.enemy_health_label.pack(pady=10)
 
-        #placeholder button - to be replaced later for progression
-        self.next_button = tk.Button(self.master, text="Next", command=self.game_loop)
-        self.next_button.pack(pady=20)
+        # placeholder button - to be replaced later for progression
+        self.attack_button = tk.Button(self.master, text="Attack Enemy", command=self.attack_enemy())
+        self.heal_button = tk.Button(self.master, text="Heal Player", command=self.heal_player())
+
+        self.attack_button.pack(pady=10)
+        self.heal_button.pack(pady=10)
+
+    def game_loop(self):
+        self.update_display()
+
+    def attack_enemy(self):
+        damage = random.randint(5,15)
+        self.enemy.decrease_health(damage)
+        self.update_display()
+
+
 
 game = Game()
 game.master.mainloop()
