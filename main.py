@@ -33,10 +33,11 @@ class Enemy:
     def __init__(self, initial_health=100):
         self.health = initial_health
         self.has_gun = False
+        self.is_stunned = False
 
     def decrease_health(self, amount):
         self.health -= amount
-        self.health = max(100, self.health)
+        self.health = max(0, self.health)
 
     def increase_health(self, amount):
         self.health += amount
@@ -48,12 +49,38 @@ class Enemy:
     def pickup_gun(self):
         self.has_gun = True
 
+    def stun(self):
+        self.is_stunned = True
 
+    def stun_recovery(self):
+        self.is_stunned = False
 
+class Game:
+    def __init__(self):
+        #init game window
+        self.master = tk.Tk()
+        self.master.title("SLZ - The Game")
 
+        #init players
+        self.player = Player()
+        self.enemy = Enemy()
 
+        #build gui
+        self.player_health_label = tk.Label(self.master, text=self.player.display_health())
+        self.enemy_health_label = tk.Label(self.master, text=self.enemy.display_health())
 
+        #pack gui for display
+        self.player_health_label.pack(pady=10)
+        self.enemy_health_label.pack(pady=10)
 
+        #placeholder button - to be replaced later for progression
+        self.next_button = tk.Button(self.master, text="Next", command=self.game_loop)
+        self.next_button.pack(pady=20)
+
+game = Game()
+game.master.mainloop()
+
+'''
 master = tk.Tk()
 tex = tk.Text(master=master)
 tex.pack(side=tk.RIGHT)
@@ -264,3 +291,5 @@ def shoot():
             c.pack()
 
             mainloop()
+            
+'''
