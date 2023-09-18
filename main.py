@@ -77,8 +77,8 @@ class Game:
         self.enemy_health_label.pack(pady=10)
 
         # placeholder button - to be replaced later for progression
-        self.attack_button = tk.Button(self.master, text="Attack Enemy", command=self.attack_enemy())
-        self.heal_button = tk.Button(self.master, text="Heal Player", command=self.heal_player())
+        self.attack_button = tk.Button(self.master, text="Attack Enemy", command=self.attack_enemy)
+        self.heal_button = tk.Button(self.master, text="Heal Player", command=self.heal_player)
 
         self.attack_button.pack(pady=10)
         self.heal_button.pack(pady=10)
@@ -91,6 +91,14 @@ class Game:
         self.enemy.decrease_health(damage)
         self.update_display()
 
+    def heal_player(self):
+        heal = random.randint(10,20)
+        self.player.increase_health(heal)
+        self.update_display()
+
+    def update_display(self):
+        self.player_health_label.config(text=self.player.display_health())
+        self.enemy_health_label.config(text=self.enemy.display_health())
 
 
 game = Game()
