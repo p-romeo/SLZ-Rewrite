@@ -5,6 +5,8 @@ import tkinter as tk
 class Player:
     def __init__(self, initial_health=100):
         self.health = initial_health
+        self.has_gun = False
+        self.broken_legs = False
 
     def decrease_health(self, amount):
         """Decrease the players health by an amount"""
@@ -13,9 +15,42 @@ class Player:
 
     def increase_health(self, amount):
         self.health += amount #increases health by amount
+        self.health = min(100, self.health)
 
     def display_health(self):
         return f"Players health: {self.health}"
+
+    def pickup_gun(self):
+        self.has_gun = True
+
+    def break_legs(self):
+        self.broken_legs = True
+
+    def heal_legs(self):
+        self.broken_legs = False
+
+class Enemy:
+    def __init__(self, initial_health=100):
+        self.health = initial_health
+        self.has_gun = False
+
+    def decrease_health(self, amount):
+        self.health -= amount
+        self.health = max(100, self.health)
+
+    def increase_health(self, amount):
+        self.health += amount
+        self.health = min(100, self.health)
+
+    def display_health(self):
+        return f"Enemy's Health: {self.health}"
+
+    def pickup_gun(self):
+        self.has_gun = True
+
+
+
+
 
 
 
