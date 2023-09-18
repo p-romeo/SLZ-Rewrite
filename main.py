@@ -2,6 +2,23 @@ import random
 from tkinter import *
 import tkinter as tk
 
+class Player:
+    def __init__(self, initial_health=100):
+        self.health = initial_health
+
+    def decrease_health(self, amount):
+        """Decrease the players health by an amount"""
+        self.health -= amount
+        self.health = max(0, self.health) #prevents health from going below 0
+
+    def increase_health(self, amount):
+        self.health += amount #increases health by amount
+
+    def display_health(self):
+        return f"Players health: {self.health}"
+
+
+
 master = tk.Tk()
 tex = tk.Text(master=master)
 tex.pack(side=tk.RIGHT)
