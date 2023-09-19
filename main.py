@@ -175,7 +175,7 @@ class Game:
 
         # present door options
         self.button1.config(text="Try to Open Door", command=self.try_door)
-        self.button2.config(text="Kick the door", command=self.player.decrease_health(random.randint(1, 6)))
+        self.button2.config(text="Kick the door", command=lambda: self.player.decrease_health(random.randint(1, 6)))
 
     def try_door(self):
         self.player.open_door()
