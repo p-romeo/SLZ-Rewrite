@@ -10,6 +10,7 @@ class Player:
         self.has_gun = False
         self.broken_legs = False
         self.inventory = []
+        #init the inventory list as empty at first
 
     def decrease_health(self, amount):
         """Decrease the players health by an amount"""
@@ -22,9 +23,6 @@ class Player:
 
     def display_health(self):
         return f"Players health: {self.health}"
-
-    def pickup_gun(self):
-        self.has_gun = True
 
     def break_legs(self):
         self.broken_legs = True
@@ -39,8 +37,17 @@ class Player:
         return item in self.inventory
 
     def open_door(self):
-        # placeholder
-        pass
+        if self.player.has_item("key"):
+            messagebox.showinfo("Congrats", "You Opened a Door")
+        else:
+            messagebox.showinfo("Oops!", "You need a key to do that!")
+
+    # Items you can Pick up:
+    def get_key(self):
+        self.add_to_inventory("key")
+
+    def pickup_gun(self):
+        self.add_to_inventory("gun")
 
 
 class Enemy:
@@ -176,8 +183,7 @@ class Game:
 game = Game()
 game.master.mainloop()
 
-
-#old code below - 2015
+# old code below - 2015
 '''
 old version created in 2015
 master = tk.Tk()
