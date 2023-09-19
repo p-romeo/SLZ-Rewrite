@@ -8,6 +8,7 @@ class Player:
         self.health = initial_health
         self.has_gun = False
         self.broken_legs = False
+        self.inventory = []
 
     def decrease_health(self, amount):
         """Decrease the players health by an amount"""
@@ -29,6 +30,15 @@ class Player:
 
     def heal_legs(self):
         self.broken_legs = False
+
+    def add_to_inventory(self, item):
+        self.inventory.append(item)
+
+    def has_item(self, item):
+        return item in self.inventory
+
+    def open_door(self):
+
 
 
 class Enemy:
