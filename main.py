@@ -10,7 +10,7 @@ class Player:
         self.has_gun = False
         self.broken_legs = False
         self.inventory = []
-        #init the inventory list as empty at first
+        # init the inventory list as empty at first
 
     def decrease_health(self, amount):
         """Decrease the players health by an amount"""
@@ -37,7 +37,7 @@ class Player:
         return item in self.inventory
 
     def open_door(self):
-        if self.player.has_item("key"):
+        if self.has_item("key"):
             messagebox.showinfo("Congrats", "You Opened a Door")
         else:
             messagebox.showinfo("Oops!", "You need a key to do that!")
@@ -80,6 +80,9 @@ class Enemy:
 class Game:
     def __init__(self):
         # init game window
+        self.open_door_button = None
+        self.turn_around_button = None
+        self.next_room_button = None
         self.drink_button = None
         self.leave_button = None
         self.image_label = None
@@ -100,15 +103,15 @@ class Game:
         self.enemy_health_label.pack(pady=10)
 
         # placeholder button - to be replaced later for progression
-        self.attack_button = tk.Button(self.master, text="Attack Enemy", command=self.attack_enemy)
-        self.heal_button = tk.Button(self.master, text="Heal Player", command=self.heal_player)
+        self.button1 = tk.Button(self.master, text="Attack Enemy", command=self.attack_enemy)
+        self.button2 = tk.Button(self.master, text="Heal Player", command=self.heal_player)
 
-        self.attack_button.pack(pady=10)
-        self.heal_button.pack(pady=10)
+        self.button1.pack(pady=10)
+        self.button2.pack(pady=10)
 
         # add button to start potion encounter
-        self.potion_button = tk.Button(self.master, text="Inspect Potion", command=self.potion_encounter)
-        self.potion_button.pack(pady=10)
+        self.button3 = tk.Button(self.master, text="Inspect Potion", command=self.potion_encounter)
+        self.button3.pack(pady=10)
 
     def game_loop(self):
         self.update_display()
@@ -130,16 +133,19 @@ class Game:
     def potion_encounter(self):
 
         # remove old buttons
-        self.heal_button.pack_forget()
-        self.attack_button.pack_forget()
-        self.potion_button.pack_forget()
+        self.button2.pack_forget()
+        self.button1.pack_forget()
+        self.button3.pack_forget()
 
         # presents options
         self.drink_button = tk.Button(self.master, text="Drink Potion", command=self.drink_potion, width=20, height=10)
         self.leave_button = tk.Button(self.master, text="Take Potion", command=self.take_potion, width=20, height=10)
+        self.next_room_button = tk.Button(self.master, text="Next room....", command=self.door_encounter, width=20,
+                                          height=10)
 
         self.drink_button.pack(pady=10)
         self.leave_button.pack(pady=10)
+        self.next_room_button.pack(pady=10)
 
         # displays potion image
         image = Image.open('potion.jpg')
@@ -170,14 +176,29 @@ class Game:
         self.drink_button.pack_forget()
 
         # reset the buttons
-        self.attack_button.config(text="Attack Enemy", command=self.attack_enemy)
-        self.heal_button.config(text="Heal Player", command=self.heal_player)
+        self.button1.config(text="Attack Enemy", command=self.attack_enemy)
+        self.button2.config(text="Heal Player", command=self.heal_player)
 
-        self.attack_button.pack(pady=10)
-        self.heal_button.pack(pady=10)
-        self.potion_button.pack(pady=10)
+        self.button1.pack(pady=10)
+        self.button2.pack(pady=10)
+        self.button3.pack(pady=10)
 
         messagebox.showinfo("Inventory", f"You now have {self.player.inventory} in your inventory.")
+
+    def door_encounter(self):
+
+
+        # present door options
+        self.open_door_button = tk.Button(self.master, text="Try to Open Door", command=self.try_door, width=20,
+                                          height=10)
+        self.turn_around_button = tk.Button(self.master, text="Turn Around", command=self.game_loop, width=20,
+                                            height=10)
+
+        self.open_door_button.pack(pady=10)
+        self.turn_around_button.pack(pady=10)
+
+    def try_door(self):
+        self.player.open_door()
 
 
 game = Game()
