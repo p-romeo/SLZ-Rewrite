@@ -38,6 +38,8 @@ class Player:
         return item in self.inventory
 
     def open_door(self):
+        #placeholder
+        pass
 
 
 
@@ -158,7 +160,7 @@ class Game:
         self.image_label.pack_forget()
         self.leave_button.pack_forget()
         self.drink_button.pack_forget()
-        self.player_health_label.config(text=f"You Left the Potion")
+        self.player_health_label.config(text="You Left the Potion")
         # reset the buttons
         self.attack_button.config(text="Attack Enemy", command=self.attack_enemy)
         self.heal_button.config(text="Heal Player", command=self.heal_player)
