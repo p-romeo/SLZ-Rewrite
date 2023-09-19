@@ -39,9 +39,8 @@ class Player:
         return item in self.inventory
 
     def open_door(self):
-        #placeholder
+        # placeholder
         pass
-
 
 
 class Enemy:
@@ -177,7 +176,10 @@ class Game:
 game = Game()
 game.master.mainloop()
 
+
+#old code below - 2015
 '''
+old version created in 2015
 master = tk.Tk()
 tex = tk.Text(master=master)
 tex.pack(side=tk.RIGHT)
