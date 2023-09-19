@@ -1,5 +1,6 @@
 import random
 import tkinter as tk
+import tkinter.messagebox as messagebox
 from PIL import Image, ImageTk
 
 
@@ -129,7 +130,7 @@ class Game:
 
         # presents options
         self.drink_button = tk.Button(self.master, text="Drink Potion", command=self.drink_potion, width=20, height=10)
-        self.leave_button = tk.Button(self.master, text="Leave Potion", command=self.leave_potion, width=20, height=10)
+        self.leave_button = tk.Button(self.master, text="Take Potion", command=self.take_potion, width=20, height=10)
 
         self.drink_button.pack(pady=10)
         self.leave_button.pack(pady=10)
@@ -154,13 +155,14 @@ class Game:
             self.update_display()
             self.enemy_health_label.config(text=f"You drank the potion and took {damage_amount} points of damage!")
 
-    def leave_potion(self):
+    def take_potion(self):
 
-        # player leaves the potion, boring fucks
+        self.player.add_to_inventory("Potion")
+        # player takes potion, added to inventory
         self.image_label.pack_forget()
         self.leave_button.pack_forget()
         self.drink_button.pack_forget()
-        self.player_health_label.config(text="You Left the Potion")
+
         # reset the buttons
         self.attack_button.config(text="Attack Enemy", command=self.attack_enemy)
         self.heal_button.config(text="Heal Player", command=self.heal_player)
@@ -168,6 +170,8 @@ class Game:
         self.attack_button.pack(pady=10)
         self.heal_button.pack(pady=10)
         self.potion_button.pack(pady=10)
+
+        messagebox.showinfo("Inventory", f"You now have {self.player.inventory} in your inventory.")
 
 
 game = Game()
