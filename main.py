@@ -134,7 +134,7 @@ class GameGUI:
 
 
 
-class Game:
+'''class Game:
     def __init__(self):
         # init game window
         self.open_door_button = None
@@ -233,4 +233,4 @@ class Game:
 
 
 game = Game()
-game.master.mainloop()
+game.master.mainloop()'''
