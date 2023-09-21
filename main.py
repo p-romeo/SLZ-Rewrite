@@ -27,9 +27,6 @@ class Character:
         target.decrease_health(damage)
         return damage
 
-
-
-
 class Player(Character):
     def __init__(self, initial_health=100):
         super().__init__(initial_health)
@@ -60,7 +57,6 @@ class Player(Character):
     def pickup_gun(self):
         self.has_gun = True
         self.add_to_inventory("gun")
-
 
 class Enemy(Character):
     def __init__(self, initial_health=100):
