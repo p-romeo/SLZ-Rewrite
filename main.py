@@ -4,16 +4,13 @@ import tkinter.messagebox as messagebox
 from PIL import Image, ImageTk
 
 
-class Player:
+class Character:
     def __init__(self, initial_health=100):
         self.health = initial_health
         self.has_gun = False
-        self.broken_legs = False
-        self.inventory = []
-        # init the inventory list as empty at first
 
     def decrease_health(self, amount):
-        """Decrease the players health by an amount"""
+        """Decrease the character's health by an amount"""
         self.health -= amount
         self.health = max(0, self.health)  # prevents health from going below 0
 
@@ -22,7 +19,14 @@ class Player:
         self.health = min(100, self.health)
 
     def display_health(self):
-        return f"Players health: {self.health}"
+        return f"Character's health: {self.health}"
+
+
+class Player(Character):
+    def __init__(self, initial_health=100):
+        super().__init__(initial_health)
+        self.broken_legs = False
+        self.inventory = []
 
     def break_legs(self):
         self.broken_legs = True
@@ -42,30 +46,18 @@ class Player:
         else:
             messagebox.showinfo("Oops!", "You need a key to do that!")
 
-    # Items you can Pick up:
     def get_key(self):
         self.add_to_inventory("key")
 
     def pickup_gun(self):
+        self.has_gun = True
         self.add_to_inventory("gun")
 
 
-class Enemy:
+class Enemy(Character):
     def __init__(self, initial_health=100):
-        self.health = initial_health
-        self.has_gun = False
+        super().__init__(initial_health)
         self.is_stunned = False
-
-    def decrease_health(self, amount):
-        self.health -= amount
-        self.health = max(0, self.health)
-
-    def increase_health(self, amount):
-        self.health += amount
-        self.health = min(100, self.health)
-
-    def display_health(self):
-        return f"Enemy's Health: {self.health}"
 
     def pickup_gun(self):
         self.has_gun = True
@@ -75,7 +67,6 @@ class Enemy:
 
     def stun_recovery(self):
         self.is_stunned = False
-
 
 class Game:
     def __init__(self):
@@ -183,5 +174,3 @@ class Game:
 
 game = Game()
 game.master.mainloop()
-
-# old code below - 2015
