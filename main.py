@@ -1,7 +1,46 @@
-import random
-import tkinter as tk
-import tkinter.messagebox as messagebox
-from PIL import Image, ImageTk
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+
+class GameLayout(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = 'vertical'
+
+        #Display player and enemy health
+        self.player_health_label = Label(text="Player's Health: 100")
+        self.enemy_health_label = Label(text="Enemy's Health: 100")
+
+        #Add some labels
+        self.add_widget(self.player_health_label)
+        self.add_widget(self.enemy_health_label)
+
+        #Create buttons
+        self.button1 = Button(text="Action 1", size_hint=(1,0.2))
+        self.button2 = Button(text="Action 2", size_hint=(1,0.2))
+        self.button3 = Button(text="Action 3", size_hint=(1,0.2))
+
+        #Load buttons to GUI
+        self.add_widget(self.button1)
+        self.add_widget(self.button2)
+        self.add_widget(self.button3)
+
+        #Create instances of player and enemy
+        self.player = Player()
+        self.enemy = Enemy()
+
+    def update_display(self):
+        self.player_health_label.text = f"Player's Health {self.player.health}"
+        self.enemy_health_label.text = f"Enemy's Health {self.enemy.health}"
+
+class GameApp(App):
+    def build(self):
+        return GameLayout()
+
+if __name__  == "__main__":
+    GameApp().run()
+
 
 
 class Character:
@@ -68,6 +107,13 @@ class Enemy(Character):
     def stun_recovery(self):
         self.is_stunned = False
 
+
+class GameGUI:
+    def update_display(self):
+        self.player_health_label.config(text=self.Player.display_health())
+        self.enemy_health_label.config(text=self.Enemy.display_health())
+
+
 class Game:
     def __init__(self):
         # init game window
@@ -104,22 +150,15 @@ class Game:
         self.button3 = tk.Button(self.master, text="Inspect Potion", command=self.potion_encounter)
         self.button3.pack(pady=10)
 
-    def game_loop(self):
-        self.update_display()
-
     def attack_enemy(self):
         damage = random.randint(5, 15)
         self.enemy.decrease_health(damage)
-        self.update_display()
+        GameGUI.update_display()
 
     def heal_player(self):
         heal = random.randint(10, 20)
         self.player.increase_health(heal)
-        self.update_display()
-
-    def update_display(self):
-        self.player_health_label.config(text=self.player.display_health())
-        self.enemy_health_label.config(text=self.enemy.display_health())
+        GameGUI.update_display()
 
     def potion_encounter(self):
 
@@ -140,12 +179,12 @@ class Game:
         if effect == "heal":
             heal_amount = random.randint(10, 20)
             self.player.increase_health(heal_amount)
-            self.update_display()
+            GameGUI.update_display()
             self.player_health_label.config(text=f"You drank the potion and restored {heal_amount} health!")
         if effect == "harm":
             damage_amount = random.randint(5, 25)
             self.player.decrease_health(damage_amount)
-            self.update_display()
+            GameGUI.update_display()
             self.enemy_health_label.config(text=f"You drank the potion and took {damage_amount} points of damage!")
 
     def take_potion(self):
