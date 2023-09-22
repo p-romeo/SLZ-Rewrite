@@ -27,6 +27,12 @@ class Character:
         target.decrease_health(damage)
         return damage
 
+    def heal(self, target):
+        restored = random.randint(1,10)
+        target.increase_health(restored)
+        return restored
+
+
 class Player(Character):
     def __init__(self, initial_health=100):
         super().__init__(initial_health)
@@ -101,6 +107,7 @@ class GameLayout(BoxLayout):
 
         #bind the attack button
         self.button1.on_press = self.attack_enemy
+        self.button2.on_press = self.heal_player
 
     def update_display(self):
         self.player_health_label.text = f"Player's Health {self.player.health}"
@@ -110,6 +117,12 @@ class GameLayout(BoxLayout):
         damage_dealt = self.player.attack(self.enemy)
         self.player.attack(self.enemy)
         self.display_popup(f"You dealt {damage_dealt} damage to the enemy!")
+        self.update_display()
+
+    def heal_player(self, *args):
+        health_restored = self.player.heal(self.player)
+        self.player.heal(self.player)
+        self.display_popup(f"You healed {health_restored} health!")
         self.update_display()
 
 
