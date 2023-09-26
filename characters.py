@@ -1,10 +1,13 @@
 import random
+import game_logic
 
 
 class Character:
-    def __init__(self, initial_health=100):
-        self.health = initial_health
-        self.has_gun = False
+    def __init__(self, initial_health):
+        self.broken_legs_damage = None
+        self.broken_legs = None
+        self.health = None
+        self.has_gun = None
 
     def decrease_health(self, amount):
         """Decrease the character's health by an amount"""
@@ -27,6 +30,18 @@ class Character:
         restored = random.randint(1, 10)
         target.increase_health(restored)
         return restored
+
+    def fix_legs(self, broken_legs):
+        self.broken_legs = False
+        game_logic.GameLayout.display_popup("Awesome you fixed your legs, unfortunately that is all you fixed.")
+
+    def break_legs(self, broken_legs):
+        self.broken_legs = True
+        self.broken_legs_damage = 0.5 * self.health
+        self.health = self.health - self.broken_legs_damage
+        game_logic.GameLayout.display_popup(
+            f"Oops! You just broke your legs and lost {self.broken_legs_damage} health. "
+            f"Nice job.")
 
 
 class Player(Character):
