@@ -33,30 +33,38 @@ class GameLayout(BoxLayout):
         self.player = Player()
         self.enemy = Enemy()
 
-        # bind the attack button
+        # bind the buttons
         self.button1.on_press = self.attack_enemy
         self.button2.on_press = self.heal_player
-        #self.button3.on_press = self.next_room
+        self.button3.on_press = self.next_room
 
     def update_display(self):
-        self.player_health_label.text = f"Player's Health {self.player.health}"
-        self.enemy_health_label.text = f"Enemy's Health {self.enemy.health}"
+        self.player_health_label.text = f"Player's Health: {self.player.health}"
+        self.enemy_health_label.text = f"Enemy's Health: {self.enemy.health}"
 
     def attack_enemy(self):
+        if self.enemy.health <= 0:
+            self.display_popup("Enemy is already defeated!")
+            return
         damage_dealt = self.player.attack(self.enemy)
-        self.player.attack(self.enemy)
         self.display_popup(f"You dealt {damage_dealt} damage to the enemy!")
+        
+        if self.enemy.health > 0:
+            enemy_damage = self.enemy.attack(self.player)
+            self.display_popup(f"Enemy dealt {enemy_damage} damage to you!")
+        else:
+            self.display_popup("Enemy defeated!")
+        
         self.update_display()
 
     def heal_player(self):
         health_restored = self.player.heal(self.player)
-        self.player.heal(self.player)
         self.display_popup(f"You healed {health_restored} health!")
         self.update_display()
 
-    # noinspection PyMethodMayBeStatic
+    def next_room(self):
+        self.display_popup("Next room feature coming soon!")
+
     def display_popup(self, message):
         popup = Popup(title='Game Feedback', content=Label(text=message), size_hint=(0.6, 0.3))
         popup.open()
-
-    #def next_room(self):
